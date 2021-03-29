@@ -1,3 +1,3 @@
-module github.com/anelda/wowchemy-widget-news-1
+module github.com/anelda/wowchemy-widget-tweetblog
 
 go 1.15
