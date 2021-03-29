@@ -1,50 +1,51 @@
 {{/* Initialise */}}
-{{ $ := .root }}
-{{ $st := .page }}
+
+{{ $page := .root }}
+{{ $section := .page }}
 
 <h2>{{$section.Title}}</h2>
 
 <div class="col-8">
 
 
-{{ $items_type := $st.Params.content.page_type | default "post" }}
-{{ $items_offset := $st.Params.content.offset | default 0 }}
-{{ $items_count := $st.Params.content.count }}
+{{ $items_type := $section.Params.content.page_type | default "post" }}
+{{ $items_offset := $section.Params.content.offset | default 0 }}
+{{ $items_count := $section.Params.content.count }}
 {{ if eq $items_count 0 }}
   {{ $items_count = 65535 }}
 {{ else }}
   {{ $items_count = $items_count | default 5 }}
 {{ end }}
-{{ $items_sort := $st.Params.content.order | default "desc" }}
+{{ $items_sort := $section.Params.content.order | default "desc" }}
 
 {{/* Query */}}
 {{ $query := where site.RegularPages "Type" $items_type }}
 {{ $archive_page := site.GetPage "Section" $items_type }}
 
 {{/* Filters */}}
-{{ if $st.Params.content.filters.tag }}
-  {{ $archive_page = site.GetPage (printf "tags/%s" (urlize $st.Params.content.filters.tag)) }}
+{{ if $section.Params.content.filters.tag }}
+  {{ $archive_page = site.GetPage (printf "tags/%s" (urlize $section.Params.content.filters.tag)) }}
   {{ $query = $query | intersect $archive_page.Pages }}
 {{ end }}
-{{ if $st.Params.content.filters.category }}
-  {{ $archive_page = site.GetPage (printf "categories/%s" (urlize $st.Params.content.filters.category)) }}
+{{ if $section.Params.content.filters.category }}
+  {{ $archive_page = site.GetPage (printf "categories/%s" (urlize $section.Params.content.filters.category)) }}
   {{ $query = $query | intersect $archive_page.Pages }}
 {{ end }}
-{{ if $st.Params.content.filters.publication_type }}
-  {{ $archive_page = site.GetPage (printf "publication_types/%s" $st.Params.content.filters.publication_type) }}
+{{ if $section.Params.content.filters.publication_type }}
+  {{ $archive_page = site.GetPage (printf "publication_types/%s" $section.Params.content.filters.publication_type) }}
   {{ $query = $query | intersect $archive_page.Pages }}
 {{ end }}
-{{ if $st.Params.content.filters.author }}
-  {{ $archive_page = site.GetPage (printf "authors/%s" (urlize $st.Params.content.filters.author)) }}
+{{ if $section.Params.content.filters.author }}
+  {{ $archive_page = site.GetPage (printf "authors/%s" (urlize $section.Params.content.filters.author)) }}
   {{ $query = $query | intersect $archive_page.Pages }}
 {{ end }}
-{{ if $st.Params.content.filters.exclude_featured }}
+{{ if $section.Params.content.filters.exclude_featured }}
   {{ $query = where $query "Params.featured" "!=" true }}
 {{ end }}
-{{ if $st.Params.content.filters.exclude_past }}
+{{ if $section.Params.content.filters.exclude_past }}
   {{ $query = where $query "Date" ">=" now }}
 {{ end }}
-{{ if $st.Params.content.filters.exclude_future }}
+{{ if $section.Params.content.filters.exclude_future }}
   {{ $query = where $query "Date" "<" now }}
 {{ end }}
 
