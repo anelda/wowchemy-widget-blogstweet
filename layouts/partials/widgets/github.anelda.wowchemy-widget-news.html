@@ -74,18 +74,18 @@
   {{ $i18n = "more_pages" }}
 {{ end }}
 
-{{ $columns := $st.Params.design.columns | default "2" }}
+{{ $columns := $section.Params.design.columns | default "2" }}
 
 <div class="col-12 {{if eq $columns "2"}}col-lg-8{{end}}">
 
-  {{ with $st.Content }}{{ . }}{{ end }}
+  {{ with $section.Content }}{{ . }}{{ end }}
 
   {{ range $post := $query }}
-    {{ if eq $st.Params.design.view 1 }}
+    {{ if eq $section.Params.design.view 1 }}
       {{ partial "li_list" . }}
-    {{ else if eq $st.Params.design.view 3 }}
+    {{ else if eq $section.Params.design.view 3 }}
       {{ partial "li_card" . }}
-    {{ else if eq $st.Params.design.view 4 | and (eq $items_type "publication") }}
+    {{ else if eq $section.Params.design.view 4 | and (eq $items_type "publication") }}
       {{ partial "li_citation" . }}
     {{ else }}
       {{ partial "li_compact" . }}
@@ -93,17 +93,17 @@
   {{end}}
 
   {{/* Archive link */}}
-  {{ $show_archive_link := $st.Params.content.archive.enable | default (gt $count $items_count) }}
+  {{ $show_archive_link := $section.Params.content.archive.enable | default (gt $count $items_count) }}
   {{ if $show_archive_link }}
 
     {{ $archive_link := "" }}
-    {{ if $st.Params.content.archive.link }}
-      {{ $archive_link = $st.Params.content.archive.link | relLangURL }}
+    {{ if $section.Params.content.archive.link }}
+      {{ $archive_link = $section.Params.content.archive.link | relLangURL }}
     {{ else }}
       {{ $archive_link = $archive_page.RelPermalink }}
     {{ end }}
 
-    {{ $archive_text := $st.Params.content.archive.text | default (i18n $i18n) | default "See all" }}
+    {{ $archive_text := $section.Params.content.archive.text | default (i18n $i18n) | default "See all" }}
 
     <div class="see-all">
       <a href="{{ $archive_link }}">
