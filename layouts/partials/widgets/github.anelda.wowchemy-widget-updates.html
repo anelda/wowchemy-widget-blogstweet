@@ -3,8 +3,10 @@
 {{ $page := .root }}
 {{ $section := .page }}
 
-<h1>{{$section.Title}}</h1>
-
+<div class="section-heading col-12 mb-3 text-center">
+  {{ with $section.Title }}<h1 class="mb-0">{{ . | markdownify | emojify }}</h1>{{ end }}
+  {{ with $section.Params.subtitle }}<p class="mt-1">{{ . | markdownify | emojify }}</p>{{ end }}
+</div>
 <div class="container">
 
 <div class="row">
